@@ -7,9 +7,9 @@
     "license": "MIT",
     "authors": [{ "name": "A2Z Tools", "email": "app@a2z.tools", "homepage": "https://a2z.tools" }],
     "support": {
-        "issues": "https://github.com/salman-reliable/a2ztools/issues",
+        "issues": "https://github.com/a2ztoolsdev-source/a2ztools/issues",
         "docs": "https://a2z.tools/developers",
-        "source": "https://github.com/salman-reliable/a2ztools"
+        "source": "https://github.com/a2ztoolsdev-source/a2ztools"
     },
     "require": {
         "php": ">=8.1",

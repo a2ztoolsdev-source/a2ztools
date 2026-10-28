@@ -4,7 +4,7 @@
 
 const { ENDPOINTS } = require('./endpoints.cjs');
 
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 const DEFAULT_BASE_URL = 'https://a2z.tools/public-api/v1';
 
 class A2zApiError extends Error {

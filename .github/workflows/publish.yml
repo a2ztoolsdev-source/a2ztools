@@ -6,9 +6,9 @@
 #
 # No long-lived tokens are stored. Each registry trusts this workflow through
 # OpenID Connect ("trusted publishing"), set up once on the registry:
-#   npm:   package settings -> Trusted publisher -> GitHub Actions, salman-reliable/a2ztools, publish.yml
+#   npm:   package settings -> Trusted publisher -> GitHub Actions, a2ztoolsdev-source/a2ztools, publish.yml
 #   PyPI:  account -> Publishing -> add pending publisher (project a2ztools, workflow publish.yml, environment pypi)
-#   NuGet: account -> Trusted publishing -> salman-reliable/a2ztools, publish.yml (needs secret NUGET_USER = a2ztools)
+#   NuGet: account -> Trusted publishing -> a2ztoolsdev-source/a2ztools, publish.yml (needs secret NUGET_USER = a2ztools)
 name: Publish
 
 on:

@@ -15,7 +15,7 @@
     <Description>Free API client for website checks: SSL certificate expiry, DNS, WHOIS (RDAP), SPF, DKIM, DMARC, security headers, robots.txt, llms.txt and more. No key needed to start.</Description>
     <PackageTags>ssl;dns;whois;dmarc;spf;dkim;security-headers;website-monitoring;seo;api-client</PackageTags>
     <PackageProjectUrl>https://a2z.tools/developers</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/salman-reliable/a2ztools</RepositoryUrl>
+    <RepositoryUrl>https://github.com/a2ztoolsdev-source/a2ztools</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
