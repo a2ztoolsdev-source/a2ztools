@@ -1,0 +1,16 @@
+node_modules/
+bin/
+obj/
+*.nupkg
+*.snupkg
+__pycache__/
+*.egg-info/
+dist/
+.venv/
+.pytest_cache/
+vendor/
+composer.lock
+.phpunit.cache/
+*.zip
+.DS_Store
+.vs/

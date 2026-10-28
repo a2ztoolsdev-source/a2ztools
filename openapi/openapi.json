@@ -1,0 +1,5964 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "A2Z Tools Public API",
+    "version": "1.0.0",
+    "summary": "Free website, DNS, SSL, email-authentication and SEO checks.",
+    "description": "Free API by A2Z Tools (https://a2z.tools). Without a key: 10 calls a minute and 100 a day per IP. With a free key from https://a2z.tools/developers: 60 a minute and 2,000 a day. Send the key in the X-API-Key header. If you show the data publicly, please credit \"Data by A2Z Tools\" with a link to https://a2z.tools.",
+    "termsOfService": "https://a2z.tools/terms",
+    "contact": {
+      "name": "A2Z Tools",
+      "url": "https://a2z.tools/developers",
+      "email": "app@a2z.tools"
+    }
+  },
+  "externalDocs": {
+    "url": "https://a2z.tools/developers"
+  },
+  "servers": [
+    {
+      "url": "https://a2z.tools/public-api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "ssl",
+      "description": "SSL / TLS: Certificates, expiry, protocols, HSTS, OCSP and certificate transparency."
+    },
+    {
+      "name": "dns",
+      "description": "DNS: Records, propagation across public resolvers, reverse DNS and DNSSEC."
+    },
+    {
+      "name": "email",
+      "description": "Email authentication: SPF, DKIM, DMARC, BIMI, MTA-STS and TLS-RPT, separately or as one graded check."
+    },
+    {
+      "name": "domain",
+      "description": "Domain & IP: WHOIS over RDAP, IP and ASN information, reverse IP."
+    },
+    {
+      "name": "http",
+      "description": "HTTP & headers: Status, redirects, response headers, security headers, CSP, CORS, cookies, caching and performance basics."
+    },
+    {
+      "name": "seo",
+      "description": "SEO & crawlers: Open Graph, canonical, hreflang, structured data, robots.txt, sitemaps, llms.txt, AI crawler access and ads.txt."
+    },
+    {
+      "name": "site",
+      "description": "Site health: One-call health summaries, PWA manifest, favicon, security.txt and front-end dependency checks."
+    }
+  ],
+  "security": [
+    {
+      "ApiKey": []
+    },
+    {}
+  ],
+  "paths": {
+    "/ssl/certificate": {
+      "get": {
+        "operationId": "ssl_certificate",
+        "tags": [
+          "ssl"
+        ],
+        "summary": "Certificate details and expiry",
+        "description": "Connects to the host and returns the certificate chain, issuer, subject alternative names, validity dates and days until expiry. Results are cached for 1800 seconds. Try it in a browser: https://a2z.tools/ssl-certificate-checker",
+        "parameters": [
+          {
+            "name": "host",
+            "in": "query",
+            "required": true,
+            "description": "Host name (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          },
+          {
+            "name": "port",
+            "in": "query",
+            "required": false,
+            "description": "TCP port, default 443.",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "443"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ssl/protocols": {
+      "get": {
+        "operationId": "ssl_protocols",
+        "tags": [
+          "ssl"
+        ],
+        "summary": "Supported TLS versions",
+        "description": "Which TLS protocol versions the server accepts (TLS 1.0 to 1.3). Results are cached for 1800 seconds.",
+        "parameters": [
+          {
+            "name": "host",
+            "in": "query",
+            "required": true,
+            "description": "Host name (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          },
+          {
+            "name": "port",
+            "in": "query",
+            "required": false,
+            "description": "TCP port, default 443.",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "443"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ssl/https": {
+      "get": {
+        "operationId": "ssl_https",
+        "tags": [
+          "ssl"
+        ],
+        "summary": "HTTPS availability",
+        "description": "Whether the domain answers over HTTPS with a valid certificate. Results are cached for 1800 seconds.",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ssl/https-redirect": {
+      "get": {
+        "operationId": "ssl_https_redirect",
+        "tags": [
+          "ssl"
+        ],
+        "summary": "HTTP to HTTPS redirect",
+        "description": "Whether plain HTTP redirects to HTTPS, and how. Results are cached for 1800 seconds.",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ssl/hsts": {
+      "get": {
+        "operationId": "ssl_hsts",
+        "tags": [
+          "ssl"
+        ],
+        "summary": "HSTS header",
+        "description": "The Strict-Transport-Security header, parsed and checked. Results are cached for 1800 seconds.",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ssl/hsts-preload": {
+      "get": {
+        "operationId": "ssl_hsts_preload",
+        "tags": [
+          "ssl"
+        ],
+        "summary": "HSTS preload eligibility",
+        "description": "Whether the domain meets the hstspreload.org requirements. Results are cached for 1800 seconds.",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ssl/ocsp": {
+      "get": {
+        "operationId": "ssl_ocsp",
+        "tags": [
+          "ssl"
+        ],
+        "summary": "OCSP status",
+        "description": "Asks the certificate's OCSP responder whether it has been revoked. Results are cached for 1800 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ssl/crl": {
+      "get": {
+        "operationId": "ssl_crl",
+        "tags": [
+          "ssl"
+        ],
+        "summary": "CRL revocation check",
+        "description": "Checks the certificate against its CRL distribution point. Results are cached for 1800 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ssl/ciphers": {
+      "get": {
+        "operationId": "ssl_ciphers",
+        "tags": [
+          "ssl"
+        ],
+        "summary": "Cipher suites",
+        "description": "The cipher suites the server negotiates, graded. Results are cached for 1800 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ssl/certificate-transparency": {
+      "get": {
+        "operationId": "ssl_certificate_transparency",
+        "tags": [
+          "ssl"
+        ],
+        "summary": "Certificate transparency",
+        "description": "Certificates logged for the domain in public CT logs. Results are cached for 1800 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dns/records": {
+      "get": {
+        "operationId": "dns_records",
+        "tags": [
+          "dns"
+        ],
+        "summary": "DNS records",
+        "description": "A, AAAA, CNAME, MX, NS, TXT, SOA, CAA and more. Omit type to get all common types. Results are cached for 300 seconds. Try it in a browser: https://a2z.tools/dns-lookup",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "description": "Record type (A, AAAA, MX, TXT, NS, CNAME, SOA, CAA, SRV, PTR). Omit for all.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "MX"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dns/propagation": {
+      "get": {
+        "operationId": "dns_propagation",
+        "tags": [
+          "dns"
+        ],
+        "summary": "DNS propagation",
+        "description": "The answer from several public resolvers around the world, side by side. Counts as 2 calls. Results are cached for 300 seconds. Try it in a browser: https://a2z.tools/dns-propagation-checker",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "description": "Record type, default A.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "A"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dns/reverse": {
+      "get": {
+        "operationId": "dns_reverse",
+        "tags": [
+          "dns"
+        ],
+        "summary": "Reverse DNS (PTR)",
+        "description": "The PTR name for an IP address. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "ip",
+            "in": "query",
+            "required": true,
+            "description": "IPv4 or IPv6 address.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "8.8.8.8"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dns/dnssec": {
+      "get": {
+        "operationId": "dns_dnssec",
+        "tags": [
+          "dns"
+        ],
+        "summary": "DNSSEC",
+        "description": "Whether the zone is signed and the chain of trust validates. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email/security": {
+      "get": {
+        "operationId": "email_security",
+        "tags": [
+          "email"
+        ],
+        "summary": "Email security grade",
+        "description": "SPF, DKIM, DMARC, BIMI, MTA-STS and TLS-RPT in one graded report. Results are cached for 900 seconds. Try it in a browser: https://a2z.tools/email-security-checker",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          },
+          {
+            "name": "dkimSelector",
+            "in": "query",
+            "required": false,
+            "description": "DKIM selector to check (google, selector1, k1...).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "google"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email/spf": {
+      "get": {
+        "operationId": "email_spf",
+        "tags": [
+          "email"
+        ],
+        "summary": "SPF record",
+        "description": "The SPF record, parsed, with the DNS look-up count and problems. Results are cached for 900 seconds. Try it in a browser: https://a2z.tools/spf-checker",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email/dmarc": {
+      "get": {
+        "operationId": "email_dmarc",
+        "tags": [
+          "email"
+        ],
+        "summary": "DMARC record",
+        "description": "The DMARC policy, parsed, with reporting addresses and problems. Results are cached for 900 seconds. Try it in a browser: https://a2z.tools/dmarc-checker",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email/dkim": {
+      "get": {
+        "operationId": "email_dkim",
+        "tags": [
+          "email"
+        ],
+        "summary": "DKIM record",
+        "description": "The DKIM public key for a selector, parsed. Results are cached for 900 seconds. Try it in a browser: https://a2z.tools/dkim-checker",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          },
+          {
+            "name": "selector",
+            "in": "query",
+            "required": true,
+            "description": "DKIM selector.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "google"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email/bimi": {
+      "get": {
+        "operationId": "email_bimi",
+        "tags": [
+          "email"
+        ],
+        "summary": "BIMI record",
+        "description": "The BIMI record and logo location. Results are cached for 900 seconds.",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          },
+          {
+            "name": "selector",
+            "in": "query",
+            "required": false,
+            "description": "BIMI selector, default 'default'.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "default"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email/mta-sts": {
+      "get": {
+        "operationId": "email_mta_sts",
+        "tags": [
+          "email"
+        ],
+        "summary": "MTA-STS",
+        "description": "The MTA-STS DNS record and policy file. Results are cached for 900 seconds.",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email/tls-rpt": {
+      "get": {
+        "operationId": "email_tls_rpt",
+        "tags": [
+          "email"
+        ],
+        "summary": "TLS-RPT",
+        "description": "The SMTP TLS reporting record. Results are cached for 900 seconds.",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/domain/whois": {
+      "get": {
+        "operationId": "domain_whois",
+        "tags": [
+          "domain"
+        ],
+        "summary": "WHOIS (RDAP)",
+        "description": "Registrar, registration and expiry dates, status and name servers, from RDAP. Results are cached for 3600 seconds. Try it in a browser: https://a2z.tools/whois-lookup",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/domain/ip": {
+      "get": {
+        "operationId": "domain_ip",
+        "tags": [
+          "domain"
+        ],
+        "summary": "IP information",
+        "description": "Network, owner and location information for an IP address. Results are cached for 3600 seconds.",
+        "parameters": [
+          {
+            "name": "ip",
+            "in": "query",
+            "required": true,
+            "description": "IPv4 or IPv6 address.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "8.8.8.8"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/domain/asn": {
+      "get": {
+        "operationId": "domain_asn",
+        "tags": [
+          "domain"
+        ],
+        "summary": "ASN information",
+        "description": "The organisation and prefixes of an autonomous system. Results are cached for 3600 seconds.",
+        "parameters": [
+          {
+            "name": "asn",
+            "in": "query",
+            "required": true,
+            "description": "AS number, with or without the AS prefix.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "AS15169"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/domain/reverse-ip": {
+      "get": {
+        "operationId": "domain_reverse_ip",
+        "tags": [
+          "domain"
+        ],
+        "summary": "Reverse IP",
+        "description": "Other host names seen on the same IP address. Results are cached for 3600 seconds.",
+        "parameters": [
+          {
+            "name": "ip",
+            "in": "query",
+            "required": true,
+            "description": "IPv4 or IPv6 address.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "8.8.8.8"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/headers": {
+      "get": {
+        "operationId": "http_headers",
+        "tags": [
+          "http"
+        ],
+        "summary": "Response headers",
+        "description": "The response headers of a URL. Results are cached for 300 seconds. Try it in a browser: https://a2z.tools/http-headers-checker",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/status": {
+      "get": {
+        "operationId": "http_status",
+        "tags": [
+          "http"
+        ],
+        "summary": "HTTP status",
+        "description": "The status code and response time of a URL. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/redirects": {
+      "get": {
+        "operationId": "http_redirects",
+        "tags": [
+          "http"
+        ],
+        "summary": "Redirect chain",
+        "description": "Every hop from the URL to its final destination. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/security-headers": {
+      "get": {
+        "operationId": "http_security_headers",
+        "tags": [
+          "http"
+        ],
+        "summary": "Security headers grade",
+        "description": "HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy and Permissions-Policy, graded. Results are cached for 300 seconds. Try it in a browser: https://a2z.tools/security-headers-checker",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/csp": {
+      "get": {
+        "operationId": "http_csp",
+        "tags": [
+          "http"
+        ],
+        "summary": "Content-Security-Policy",
+        "description": "The CSP header parsed directive by directive, with weaknesses. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/cors": {
+      "get": {
+        "operationId": "http_cors",
+        "tags": [
+          "http"
+        ],
+        "summary": "CORS configuration",
+        "description": "The CORS headers a URL sends, with risky combinations flagged. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/cookies": {
+      "get": {
+        "operationId": "http_cookies",
+        "tags": [
+          "http"
+        ],
+        "summary": "Cookies",
+        "description": "Cookies set by the URL and their Secure, HttpOnly and SameSite flags. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/methods": {
+      "get": {
+        "operationId": "http_methods",
+        "tags": [
+          "http"
+        ],
+        "summary": "Allowed HTTP methods",
+        "description": "Which HTTP methods the server accepts. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/server-banner": {
+      "get": {
+        "operationId": "http_server_banner",
+        "tags": [
+          "http"
+        ],
+        "summary": "Server banner",
+        "description": "Server software and version disclosed in headers. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/framing": {
+      "get": {
+        "operationId": "http_framing",
+        "tags": [
+          "http"
+        ],
+        "summary": "Clickjacking protection",
+        "description": "Whether the page can be framed by other sites. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/cross-origin": {
+      "get": {
+        "operationId": "http_cross_origin",
+        "tags": [
+          "http"
+        ],
+        "summary": "Cross-origin headers",
+        "description": "COOP, COEP and CORP headers. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/cross-origin-isolation": {
+      "get": {
+        "operationId": "http_cross_origin_isolation",
+        "tags": [
+          "http"
+        ],
+        "summary": "Cross-origin isolation",
+        "description": "Whether the page is cross-origin isolated. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/permissions-policy": {
+      "get": {
+        "operationId": "http_permissions_policy",
+        "tags": [
+          "http"
+        ],
+        "summary": "Permissions-Policy",
+        "description": "The Permissions-Policy header, parsed. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/referrer-policy": {
+      "get": {
+        "operationId": "http_referrer_policy",
+        "tags": [
+          "http"
+        ],
+        "summary": "Referrer-Policy",
+        "description": "The Referrer-Policy in effect. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/compression": {
+      "get": {
+        "operationId": "http_compression",
+        "tags": [
+          "http"
+        ],
+        "summary": "Compression",
+        "description": "Whether gzip, Brotli or zstd is served. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/cache-control": {
+      "get": {
+        "operationId": "http_cache_control",
+        "tags": [
+          "http"
+        ],
+        "summary": "Caching headers",
+        "description": "Cache-Control, ETag, Last-Modified and Expires, explained. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/protocol": {
+      "get": {
+        "operationId": "http_protocol",
+        "tags": [
+          "http"
+        ],
+        "summary": "HTTP version",
+        "description": "HTTP/1.1, HTTP/2 or HTTP/3 support. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/ttfb": {
+      "get": {
+        "operationId": "http_ttfb",
+        "tags": [
+          "http"
+        ],
+        "summary": "Time to first byte",
+        "description": "DNS, connect, TLS and first-byte timings from our server. Results are cached for 60 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/cdn": {
+      "get": {
+        "operationId": "http_cdn",
+        "tags": [
+          "http"
+        ],
+        "summary": "CDN detection",
+        "description": "Which CDN serves the domain, if any. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/http/static-assets": {
+      "get": {
+        "operationId": "http_static_assets",
+        "tags": [
+          "http"
+        ],
+        "summary": "Static asset audit",
+        "description": "Size, caching and compression of the page's scripts, styles and images. Results are cached for 300 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/seo/open-graph": {
+      "get": {
+        "operationId": "seo_open_graph",
+        "tags": [
+          "seo"
+        ],
+        "summary": "Open Graph & Twitter cards",
+        "description": "og: and twitter: tags, with missing or broken values flagged. Results are cached for 600 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/seo/canonical": {
+      "get": {
+        "operationId": "seo_canonical",
+        "tags": [
+          "seo"
+        ],
+        "summary": "Canonical URL",
+        "description": "The canonical link and whether it agrees with the URL. Results are cached for 600 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/seo/hreflang": {
+      "get": {
+        "operationId": "seo_hreflang",
+        "tags": [
+          "seo"
+        ],
+        "summary": "hreflang",
+        "description": "hreflang alternates and reciprocal-link problems. Results are cached for 600 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/seo/schema": {
+      "get": {
+        "operationId": "seo_schema",
+        "tags": [
+          "seo"
+        ],
+        "summary": "Structured data",
+        "description": "JSON-LD, Microdata and RDFa found on the page, validated. Results are cached for 600 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/seo/mixed-content": {
+      "get": {
+        "operationId": "seo_mixed_content",
+        "tags": [
+          "seo"
+        ],
+        "summary": "Mixed content",
+        "description": "HTTP resources loaded by an HTTPS page. Results are cached for 600 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/seo/technology": {
+      "get": {
+        "operationId": "seo_technology",
+        "tags": [
+          "seo"
+        ],
+        "summary": "Technology detection",
+        "description": "CMS, frameworks, analytics and hosting the page uses. Results are cached for 600 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/seo/robots-txt": {
+      "get": {
+        "operationId": "seo_robots_txt",
+        "tags": [
+          "seo"
+        ],
+        "summary": "robots.txt",
+        "description": "The robots.txt file, parsed by user agent. Results are cached for 600 seconds. Try it in a browser: https://a2z.tools/robots-txt-checker",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/seo/sitemap": {
+      "get": {
+        "operationId": "seo_sitemap",
+        "tags": [
+          "seo"
+        ],
+        "summary": "XML sitemap",
+        "description": "Fetches and validates an XML sitemap or sitemap index. Results are cached for 600 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com/sitemap.xml"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/seo/llms-txt": {
+      "get": {
+        "operationId": "seo_llms_txt",
+        "tags": [
+          "seo"
+        ],
+        "summary": "llms.txt",
+        "description": "Whether the site publishes /llms.txt, and whether it is well formed. Results are cached for 600 seconds. Try it in a browser: https://a2z.tools/llms-txt-checker",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/seo/ai-crawlers": {
+      "get": {
+        "operationId": "seo_ai_crawlers",
+        "tags": [
+          "seo"
+        ],
+        "summary": "AI crawler access",
+        "description": "Which AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended and others) robots.txt allows. Results are cached for 600 seconds. Try it in a browser: https://a2z.tools/ai-crawler-access-checker",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/seo/ads-txt": {
+      "get": {
+        "operationId": "seo_ads_txt",
+        "tags": [
+          "seo"
+        ],
+        "summary": "ads.txt",
+        "description": "The ads.txt file, parsed and validated. Results are cached for 600 seconds. Try it in a browser: https://a2z.tools/ads-txt-checker",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/seo/app-ads-txt": {
+      "get": {
+        "operationId": "seo_app_ads_txt",
+        "tags": [
+          "seo"
+        ],
+        "summary": "app-ads.txt",
+        "description": "The app-ads.txt file, parsed and validated. Results are cached for 600 seconds.",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/site/health": {
+      "get": {
+        "operationId": "site_health",
+        "tags": [
+          "site"
+        ],
+        "summary": "Website health summary",
+        "description": "DNS, HTTPS, certificate expiry, security headers and email authentication in one call. Counts as 3 calls. Counts as 3 calls. Results are cached for 900 seconds. Try it in a browser: https://a2z.tools/website-health-checker",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/site/audit": {
+      "get": {
+        "operationId": "site_audit",
+        "tags": [
+          "site"
+        ],
+        "summary": "Website security audit",
+        "description": "The full security audit behind the A2Z website audit tool. Counts as 5 calls. Counts as 5 calls. Results are cached for 900 seconds.",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/site/security-txt": {
+      "get": {
+        "operationId": "site_security_txt",
+        "tags": [
+          "site"
+        ],
+        "summary": "security.txt",
+        "description": "The /.well-known/security.txt file, parsed and validated. Results are cached for 900 seconds.",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Domain name, without https:// (example.com).",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/site/manifest": {
+      "get": {
+        "operationId": "site_manifest",
+        "tags": [
+          "site"
+        ],
+        "summary": "Web app manifest",
+        "description": "The PWA manifest, validated for installability. Results are cached for 900 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/site/service-worker": {
+      "get": {
+        "operationId": "site_service_worker",
+        "tags": [
+          "site"
+        ],
+        "summary": "Service worker",
+        "description": "Whether the page registers a service worker. Results are cached for 900 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/site/favicon": {
+      "get": {
+        "operationId": "site_favicon",
+        "tags": [
+          "site"
+        ],
+        "summary": "Favicons",
+        "description": "Every favicon and touch icon the page declares, with sizes. Results are cached for 900 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/site/third-party-scripts": {
+      "get": {
+        "operationId": "site_third_party_scripts",
+        "tags": [
+          "site"
+        ],
+        "summary": "Third-party scripts",
+        "description": "Scripts loaded from other domains, grouped by owner. Results are cached for 900 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/site/external-resources": {
+      "get": {
+        "operationId": "site_external_resources",
+        "tags": [
+          "site"
+        ],
+        "summary": "External resources",
+        "description": "Every external resource the page loads. Results are cached for 900 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/site/source-maps": {
+      "get": {
+        "operationId": "site_source_maps",
+        "tags": [
+          "site"
+        ],
+        "summary": "Exposed source maps",
+        "description": "Publicly reachable JavaScript source maps. Results are cached for 900 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/site/dependencies": {
+      "get": {
+        "operationId": "site_dependencies",
+        "tags": [
+          "site"
+        ],
+        "summary": "Front-end dependencies",
+        "description": "JavaScript libraries and versions detected on the page. Results are cached for 900 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/site/vulnerable-libraries": {
+      "get": {
+        "operationId": "site_vulnerable_libraries",
+        "tags": [
+          "site"
+        ],
+        "summary": "Vulnerable libraries",
+        "description": "Detected libraries with known vulnerabilities. Results are cached for 900 seconds.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "description": "Full URL including https://.",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "example": "https://example.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A parameter is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The API key is not valid, or a key is required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API key is suspended or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "A rate limit or the daily quota was reached. See Retry-After.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The API is temporarily switched off.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key"
+      }
+    },
+    "schemas": {
+      "Result": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": true
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "ok",
+          "error"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "const": false
+          },
+          "code": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "docs": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

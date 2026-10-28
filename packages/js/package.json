@@ -1,0 +1,29 @@
+{
+  "name": "@a2ztools/api",
+  "version": "1.0.0",
+  "description": "Free API client for website checks: SSL certificate expiry, DNS, WHOIS (RDAP), SPF, DKIM, DMARC, security headers, robots.txt, llms.txt and more.",
+  "keywords": ["ssl-checker", "dns", "whois", "dmarc", "spf", "dkim", "security-headers", "website-monitoring", "seo", "api-client"],
+  "homepage": "https://a2z.tools/developers",
+  "repository": { "type": "git", "url": "git+https://github.com/salman-reliable/a2ztools.git", "directory": "packages/js" },
+  "bugs": { "url": "https://github.com/salman-reliable/a2ztools/issues" },
+  "author": "A2Z Tools <app@a2z.tools> (https://a2z.tools)",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.cjs",
+  "module": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js",
+      "require": "./src/index.cjs"
+    }
+  },
+  "files": ["src", "README.md", "LICENSE"],
+  "sideEffects": false,
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node --test"
+  },
+  "publishConfig": { "access": "public", "provenance": true }
+}

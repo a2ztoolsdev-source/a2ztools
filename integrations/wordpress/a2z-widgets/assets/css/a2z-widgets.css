@@ -1,0 +1,6 @@
+/* Loaded only when Settings > A2Z Widgets > "Powered by" is switched on. */
+.a2z-widgets-attribution {
+	margin: 0.35em 0 0;
+	font-size: 0.8em;
+	opacity: 0.8;
+}

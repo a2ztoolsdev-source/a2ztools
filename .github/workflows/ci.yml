@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  generated:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: node scripts/generate.mjs --check
+
+  js:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: { node: [18, 20, 22] }
+    defaults: { run: { working-directory: packages/js } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ matrix.node }}' }
+      - run: npm test
+
+  python:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: { python: ['3.8', '3.10', '3.13'] }
+    defaults: { run: { working-directory: packages/python } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '${{ matrix.python }}' }
+      - run: pip install -e . pytest
+      - run: pytest -q
+
+  dotnet:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: packages/dotnet } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with: { dotnet-version: '8.0.x' }
+      - run: dotnet test test/A2zTools.Api.Tests/A2zTools.Api.Tests.csproj
+      - run: dotnet pack src/A2zTools.Api/A2zTools.Api.csproj -c Release -o out
+
+  php:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: { php: ['8.1', '8.3', '8.4'] }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with: { php-version: '${{ matrix.php }}', tools: composer }
+      - run: composer install --no-interaction --no-progress
+      - run: vendor/bin/phpunit

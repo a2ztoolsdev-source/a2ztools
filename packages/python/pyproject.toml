@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "a2ztools"
+dynamic = ["version"]
+description = "Free API client for website checks: SSL certificate expiry, DNS, WHOIS (RDAP), SPF, DKIM, DMARC, security headers, robots.txt, llms.txt and more."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+authors = [{ name = "A2Z Tools", email = "app@a2z.tools" }]
+keywords = ["ssl", "dns", "whois", "dmarc", "spf", "dkim", "security-headers", "website-monitoring", "seo", "api-client"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Topic :: Internet :: Name Service (DNS)",
+  "Topic :: Security",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://a2z.tools/developers"
+Documentation = "https://a2z.tools/developers"
+Source = "https://github.com/salman-reliable/a2ztools"
+Issues = "https://github.com/salman-reliable/a2ztools/issues"
+
+[tool.hatch.version]
+path = "src/a2ztools/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/a2ztools"]

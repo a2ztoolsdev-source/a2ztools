@@ -1,0 +1,28 @@
+{
+    "name": "a2ztools/api",
+    "description": "Free API client for website checks: SSL certificate expiry, DNS, WHOIS (RDAP), SPF, DKIM, DMARC, security headers, robots.txt, llms.txt and more.",
+    "type": "library",
+    "keywords": ["ssl", "dns", "whois", "dmarc", "spf", "dkim", "security-headers", "website-monitoring", "seo", "api-client"],
+    "homepage": "https://a2z.tools/developers",
+    "license": "MIT",
+    "authors": [{ "name": "A2Z Tools", "email": "app@a2z.tools", "homepage": "https://a2z.tools" }],
+    "support": {
+        "issues": "https://github.com/salman-reliable/a2ztools/issues",
+        "docs": "https://a2z.tools/developers",
+        "source": "https://github.com/salman-reliable/a2ztools"
+    },
+    "require": {
+        "php": ">=8.1",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "classmap": ["packages/php/src/"]
+    },
+    "autoload-dev": {
+        "psr-4": { "A2zTools\\Api\\Tests\\": "packages/php/tests/" }
+    },
+    "config": { "sort-packages": true }
+}

@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "a2z-widgets/widget",
+	"version": "1.0.0",
+	"title": "A2Z Widget",
+	"category": "widgets",
+	"icon": "calculator",
+	"description": "Embed a free A2Z Tools calculator, converter or checker. It loads in an iframe from a2z.tools.",
+	"keywords": [ "calculator", "converter", "a2z", "embed", "widget" ],
+	"textdomain": "a2z-widgets",
+	"attributes": {
+		"slug": { "type": "string", "default": "" },
+		"theme": { "type": "string", "default": "" },
+		"currency": { "type": "string", "default": "" },
+		"units": { "type": "string", "default": "" },
+		"locale": { "type": "string", "default": "" },
+		"height": { "type": "number" },
+		"width": { "type": "string", "default": "" },
+		"compact": { "type": "boolean", "default": false },
+		"showTitle": { "type": "boolean", "default": true },
+		"border": { "type": "boolean", "default": true },
+		"radius": { "type": "number" },
+		"accent": { "type": "string", "default": "" },
+		"presets": { "type": "object", "default": {} }
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"spacing": { "margin": true }
+	},
+	"editorScript": "a2z-widgets-block-editor"
+}
