@@ -32,8 +32,7 @@ jobs:
       - run: npm test
       - name: Check the tag matches package.json
         run: test "js-v$(node -p "require('./package.json').version")" = "${GITHUB_REF_NAME}"
-      - run: cp ../../LICENSE .
-      - run: npm publish --access public
+      - run: npm publish --access public --provenance
 
   pypi:
     if: startsWith(github.ref_name, 'python-v')
