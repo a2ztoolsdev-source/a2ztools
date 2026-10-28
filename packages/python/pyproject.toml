@@ -8,7 +8,7 @@ dynamic = ["version"]
 description = "Free API client for website checks: SSL certificate expiry, DNS, WHOIS (RDAP), SPF, DKIM, DMARC, security headers, robots.txt, llms.txt and more."
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 authors = [{ name = "A2Z Tools", email = "app@a2z.tools" }]
 keywords = ["ssl", "dns", "whois", "dmarc", "spf", "dkim", "security-headers", "website-monitoring", "seo", "api-client"]
 classifiers = [

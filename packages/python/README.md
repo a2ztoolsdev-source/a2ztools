@@ -1,6 +1,6 @@
 # a2ztools
 
-Free Python client for the [A2Z Tools public API](https://a2z.tools/developers). It covers 68 checks for SSL certificates, DNS, WHOIS (RDAP), SPF, DKIM, DMARC, security headers, robots.txt, llms.txt and site health. It uses only the standard library and needs Python 3.8+.
+Free Python client for the [A2Z Tools public API](https://a2z.tools/developers). It covers 68 checks for SSL certificates, DNS, WHOIS (RDAP), SPF, DKIM, DMARC, security headers, robots.txt, llms.txt and site health. It uses only the standard library and needs Python 3.9+.
 
 ```bash
 pip install a2ztools
